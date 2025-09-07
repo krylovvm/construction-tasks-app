@@ -1,8 +1,13 @@
-import { useUserStore } from '@/entities/user';
-import { LoginForm } from '@/features/auth';
+import { useUserStore } from '@/entities/user'
+import { LoginForm } from '@/features/auth'
+import { useNavigate } from 'react-router-dom'
 
 export const LoginPage = () => {
-  const { currentUser, logout } = useUserStore();
+  const { currentUser, logout } = useUserStore()
+  const navigate = useNavigate()
+  const handleLogin = () => {
+    navigate('/plan')
+  }
 
   if (currentUser) {
     return (
@@ -19,8 +24,8 @@ export const LoginPage = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
-  return <LoginForm onLogin={() => {}} />;
-};
+  return <LoginForm onLogin={handleLogin} />
+}

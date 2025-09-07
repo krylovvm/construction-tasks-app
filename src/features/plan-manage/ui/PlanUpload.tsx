@@ -1,25 +1,25 @@
-import { useState, FC } from 'react';
-import { usePlanStore } from '@/entities/plan';
-import { useUserStore } from '@/entities/user';
-import { Button, Input, ImageUpload } from '@/shared/ui';
+import { useState, FC } from 'react'
+import { usePlanStore } from '@/entities/plan'
+import { useUserStore } from '@/entities/user'
+import { Button, Input, ImageUpload } from '@/shared/ui'
 
 export const PlanUpload: FC = () => {
-  const { currentUser } = useUserStore();
-  const { addPlan } = usePlanStore();
-  const [name, setName] = useState('');
-  const [image, setImage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { currentUser } = useUserStore()
+  const { addPlan } = usePlanStore()
+  const [name, setName] = useState('')
+  const [image, setImage] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  if (!currentUser) return null;
+  if (!currentUser) return null
 
   const handleUpload = async () => {
-    if (!name || !image) return;
-    setLoading(true);
-    await addPlan(currentUser.id, name, image);
-    setName('');
-    setImage(null);
-    setLoading(false);
-  };
+    if (!name || !image) return
+    setLoading(true)
+    await addPlan(currentUser.id, name, image)
+    setName('')
+    setImage(null)
+    setLoading(false)
+  }
 
   return (
     <div className="flex flex-col gap-2 mb-4">
@@ -29,5 +29,5 @@ export const PlanUpload: FC = () => {
         {loading ? 'Uploading...' : 'Upload Plan'}
       </Button>
     </div>
-  );
-};
+  )
+}

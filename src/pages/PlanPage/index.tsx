@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
-import { useUserStore } from '@/entities/user';
-import { usePlanStore } from '@/entities/plan';
-import { PlanUpload, PlanList } from '@/features/plan-manage';
+import React, { useEffect } from 'react'
+import { useUserStore } from '@/entities/user'
+import { usePlanStore } from '@/entities/plan'
+import { PlanUpload, PlanList } from '@/features/plan-manage'
+import { Plan, TaskBoard } from '@/widgets/'
 
 export const PlanPage: React.FC = () => {
-  const { currentUser } = useUserStore();
+  const { currentUser } = useUserStore()
   const { plans, fetchPlans, activePlanId, setActivePlan, deletePlan, getActivePlan } =
-    usePlanStore();
+    usePlanStore()
 
   useEffect(() => {
-    if (currentUser) fetchPlans(currentUser.id);
-  }, [currentUser, fetchPlans]);
+    if (currentUser) fetchPlans(currentUser.id)
+  }, [currentUser, fetchPlans])
 
   if (!currentUser) {
-    return <div className="p-8 text-center">Please login to manage your plans.</div>;
+    return <div className="p-8 text-center">Please login to manage your plans.</div>
   }
 
-  const activePlan = getActivePlan();
+  const activePlan = getActivePlan()
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -34,6 +35,7 @@ export const PlanPage: React.FC = () => {
           <div className="mt-2 text-gray-700">{activePlan.name}</div>
         </div>
       )}
+      <Plan />
     </div>
-  );
-};
+  )
+}
