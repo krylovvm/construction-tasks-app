@@ -1,21 +1,23 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { App } from './App';
-import { LoginPage } from '@/pages/LoginPage';
-import { PlanPage } from '@/pages/PlanPage';
+import { createBrowserRouter } from 'react-router-dom'
+import { App } from './App'
+import { Login, Plans, PlanDetail, HomePage } from '@/pages/'
+import { PATHS } from '@/shared/config'
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: PATHS.HOME,
     element: <App />,
     children: [
+      { index: true, element: <HomePage /> },
       {
-        path: '/',
-        element: <LoginPage />,
+        path: PATHS.LOGIN,
+        element: <Login />,
       },
       {
-        path: '/plan',
-        element: <PlanPage />,
+        path: PATHS.PLANS,
+        element: <Plans />,
       },
+      { path: `${PATHS.PLANS}/:id`, element: <PlanDetail /> },
     ],
   },
-]);
+])

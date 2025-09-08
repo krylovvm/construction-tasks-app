@@ -1,6 +1,5 @@
 export * from './Button'
 export * from './Input'
 export * from './ImageUpload'
-export * from './Thumbnail'
 export * from './Marker'
 export * from './Modal'

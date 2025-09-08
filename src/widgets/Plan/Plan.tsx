@@ -2,8 +2,8 @@ import { usePlanStore } from '@/entities/plan'
 import { useTaskStore } from '@/entities/task'
 import { PlanView } from './PlanView'
 
-export const Plan = () => {
-  const { getActivePlan, activePlanId } = usePlanStore()
+export const Plan = ({ planId }: { planId: string }) => {
+  const { getActivePlan } = usePlanStore()
   const { activeTaskId, setActiveTask } = useTaskStore()
   const plan = getActivePlan()
 

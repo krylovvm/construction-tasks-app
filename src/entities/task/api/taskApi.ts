@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { getTaskDB } from '../model/db'
 import { Task } from '../model/types'
 
-export const listTasksForPlan = async (planId: string): Promise<Task[]> => {
+export const getPlanTasks = async (planId: string): Promise<Task[]> => {
   const db = await getTaskDB()
   const docs = await db.tasks.find({ selector: { planId } }).exec()
   return docs.map(doc => doc.toJSON())

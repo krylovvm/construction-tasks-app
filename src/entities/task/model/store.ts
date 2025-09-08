@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import {
-  listTasksForPlan,
+  getPlanTasks,
   addTask as apiAddTask,
   updateTask as apiUpdateTask,
   deleteTask as apiDeleteTask,
@@ -24,7 +24,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
   activeTaskId: null,
   fetchTasks: async planId => {
-    const tasks = await listTasksForPlan(planId)
+    const tasks = await getPlanTasks(planId)
     set({ tasks })
   },
   addTask: async task => {

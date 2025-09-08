@@ -2,18 +2,20 @@ import { useState, FC, FormEvent } from 'react'
 import { useUserStore } from '@/entities/user'
 import { Input, Button } from '@/shared/ui'
 
-interface Props {
+interface LoginFormProps {
   onLogin: () => void
 }
 
-export const LoginForm: FC<Props> = ({ onLogin }) => {
+export const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const { login } = useUserStore()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+
     if (!name.trim()) return
+
     setLoading(true)
     await login(name.trim())
     setLoading(false)
@@ -21,9 +23,9 @@ export const LoginForm: FC<Props> = ({ onLogin }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xs mx-auto mt-16 space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-xs mx-auto mt-16 space-y-4 flex flex-col">
       <Input
-        label="Your Name"
+        label="Username"
         name="name"
         value={name}
         onChange={e => setName(e.target.value)}
