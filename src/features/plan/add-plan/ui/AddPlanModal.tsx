@@ -13,14 +13,17 @@ export const AddPlanModal = ({ isOpen, onClose }: AddPlanModalProps) => {
   const { addPlan } = usePlanStore()
   const [name, setName] = useState('')
   const [image, setImage] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false)
 
   if (!currentUser) return null
 
   const handleConfirm = async () => {
     if (!name || !image) return
+
     setLoading(true)
+
     await addPlan(currentUser.id, name, image)
+
     setName('')
     setImage(null)
     setLoading(false)
@@ -32,9 +35,14 @@ export const AddPlanModal = ({ isOpen, onClose }: AddPlanModalProps) => {
       <div className="flex flex-col gap-2">
         <Input label="Plan Name" value={name} onChange={e => setName(e.target.value)} />
         <ImageUpload label="Plan Image" value={image} onChange={setImage} />
-        <Button onClick={handleConfirm} disabled={loading || !name || !image}>
-          {loading ? 'Adding...' : 'Confirm'}
-        </Button>
+        <div className="flex justify-end gap-2 mt-4">
+          <Button variant="secondary" onClick={onClose} disabled={isLoading}>
+            Cancel
+          </Button>
+          <Button onClick={handleConfirm} disabled={isLoading || !name || !image}>
+            {isLoading ? 'Adding...' : 'Confirm'}
+          </Button>
+        </div>
       </div>
     </Modal>
   )

@@ -1,3 +1,2 @@
-export * from './task-board/TaskBoard'
-export * from './plan/Plan'
+export * from './plan/PlanContainer'
 export * from './header/Header'

@@ -11,13 +11,6 @@ export const getUserPlans: (userId: string) => Promise<Plan[]> = async (
   return docs.map(doc => doc.toJSON())
 }
 
-export const getPlan = async (id: string): Promise<Plan | null> => {
-  const db = await getPlanDB()
-  const doc = await db.plans.findOne({ selector: { id } }).exec()
-
-  return doc ? doc.toJSON() : null
-}
-
 export const addPlan = async (userId: string, name: string, image: string): Promise<Plan> => {
   const db = await getPlanDB()
   const now = Date.now()

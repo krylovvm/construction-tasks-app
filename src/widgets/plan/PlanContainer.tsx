@@ -1,28 +1,66 @@
-import { FC, useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import L, { LatLngExpression, LeafletMouseEvent } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTaskStore } from '@/entities/task'
 import { Marker } from '@/shared/ui'
+import { Plan } from '@/entities/plan'
 
-interface Props {
-  planImage: string
-  planId: string
+interface PlanContainerProps {
+  plan: Plan
   activeTaskId?: string
   onTaskSelect?: (taskId: string) => void
 }
 
-export const PlanView: FC<Props> = ({ planImage, planId, activeTaskId, onTaskSelect }) => {
+export const PlanContainer = ({ plan, activeTaskId, onTaskSelect }: PlanContainerProps) => {
   const mapRef = useRef<HTMLDivElement>(null)
   const leafletMapRef = useRef<L.Map | null>(null)
-  const { tasks, addTask, setActiveTask } = useTaskStore()
+  const [mapInitialized, setMapInitialized] = useState(false)
+  const [mapHeight, setMapHeight] = useState(800)
+  const { tasks, addTask, setActiveTask, fetchTasks } = useTaskStore()
+
+  // Calculate map height based on viewport
+  useEffect(() => {
+    const calculateHeight = () => {
+      const offset = 200
+      const calculatedHeight = window.innerHeight - offset
+
+      setMapHeight(Math.max(500, calculatedHeight))
+    }
+
+    calculateHeight()
+    window.addEventListener('resize', calculateHeight)
+
+    return () => {
+      window.removeEventListener('resize', calculateHeight)
+    }
+  }, [])
 
   useEffect(() => {
-    if (!mapRef.current || leafletMapRef.current) return
+    fetchTasks(plan.id)
+  }, [fetchTasks, plan.id])
+
+  // Cleanup map when component unmounts
+  useEffect(() => {
+    return () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove() // Remove map on unmount
+        leafletMapRef.current = null
+
+        setMapInitialized(false)
+      }
+    }
+  }, [])
+
+  // Initialize map
+  useEffect(() => {
+    if (!mapRef.current || leafletMapRef.current || mapInitialized) return
 
     // Image size for CRS.Simple
     const img = new window.Image()
-    img.src = planImage
+    img.src = plan.image
     img.onload = () => {
+      if (leafletMapRef.current) return // Additional safety check
+
       const w = img.width
       const h = img.height
 
@@ -36,12 +74,14 @@ export const PlanView: FC<Props> = ({ planImage, planId, activeTaskId, onTaskSel
       })
 
       leafletMapRef.current = map
+      setMapInitialized(true)
 
       const bounds: L.LatLngBoundsLiteral = [
         [0, 0],
         [h, w],
       ]
-      L.imageOverlay(planImage, bounds).addTo(map)
+
+      L.imageOverlay(plan.image, bounds).addTo(map)
       map.fitBounds(bounds)
 
       // Add marker on click
@@ -50,7 +90,7 @@ export const PlanView: FC<Props> = ({ planImage, planId, activeTaskId, onTaskSel
         const title = prompt('Enter task title:')
         if (title) {
           addTask({
-            planId,
+            planId: plan.id,
             title,
             status: 'new',
             x: lng,
@@ -59,8 +99,9 @@ export const PlanView: FC<Props> = ({ planImage, planId, activeTaskId, onTaskSel
         }
       })
     }
-  }, [planImage, planId, addTask])
+  }, [plan.image, plan.id, addTask, mapInitialized])
 
+  // Update markers
   useEffect(() => {
     const map = leafletMapRef.current
     if (!map) return
@@ -72,7 +113,7 @@ export const PlanView: FC<Props> = ({ planImage, planId, activeTaskId, onTaskSel
 
     // Add markers for tasks
     tasks
-      .filter(t => t.planId === planId)
+      .filter(t => t.planId === plan.id)
       .forEach(task => {
         const marker = L.marker([task.y, task.x], {
           icon: Marker({ active: task.id === activeTaskId }),
@@ -82,7 +123,7 @@ export const PlanView: FC<Props> = ({ planImage, planId, activeTaskId, onTaskSel
           onTaskSelect?.(task.id)
         })
       })
-  }, [tasks, planId, activeTaskId, setActiveTask, onTaskSelect])
+  }, [tasks, plan.id, activeTaskId, setActiveTask, onTaskSelect])
 
-  return <div ref={mapRef} className="w-full h-[500px] rounded shadow" />
+  return <div className="w-full rounded shadow" ref={mapRef} style={{ height: `${mapHeight}px` }} />
 }

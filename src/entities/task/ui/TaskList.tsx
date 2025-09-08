@@ -1,14 +1,14 @@
 import { FC, useState } from 'react'
-import { useTaskStore } from '../../../entities/task'
-import { Button } from '../../../shared/ui'
+import { useTaskStore } from '@/entities/task'
+import { Button } from '@/shared/ui'
 import { TaskModal } from './TaskModal'
-
-interface Props {
+import { TaskListItem } from './TaskListItem'
+interface TaskListProps {
   planId: string
   onTaskSelect?: (taskId: string) => void
 }
 
-export const TaskList: FC<Props> = ({ planId, onTaskSelect }) => {
+export const TaskList: FC<TaskListProps> = ({ planId, onTaskSelect }) => {
   const { tasks, activeTaskId, setActiveTask, addTask, updateTask, deleteTask } = useTaskStore()
   const [formOpen, setFormOpen] = useState(false)
   const [editTaskId, setEditTaskId] = useState<string | null>(null)
@@ -23,28 +23,65 @@ export const TaskList: FC<Props> = ({ planId, onTaskSelect }) => {
     updateTask(id, { title, status }).then(() => setEditTaskId(null))
   }
 
+  if (tasks.length === 0) {
+    return (
+      <div className="grid items-center text-gray-500 text-center">
+        No tasks yet. Add new ones by clicking on the plan.
+      </div>
+    )
+  }
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-bold">Tasks</h2>
-        <Button onClick={() => setFormOpen(true)}>Add Task</Button>
-      </div>
       <ul className="space-y-2">
         {tasks
           .filter(t => t.planId === planId)
           .map(task => (
-            <li
-              key={task.id}
-              className={`p-2 rounded border ${task.id === activeTaskId ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}
-              onClick={() => {
-                setActiveTask(task.id)
-                onTaskSelect?.(task.id)
-              }}
-            >
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">{task.title}</span>
-                <span className="text-xs px-2 py-1 rounded bg-gray-100">{task.status}</span>
-              </div>
+            <li key={task.id}>
+              <TaskListItem
+                task={
+                  {
+                    ...task,
+                    checklist: [
+                      {
+                        id: '1',
+                        title: 'Light Bulb 150S',
+                        status: 'not_started',
+                        description: 'Install standard light bulb in position',
+                      },
+                      {
+                        id: '2',
+                        title: 'Electrical connection, general, 3-pin',
+                        status: 'blocked',
+                        description: 'Part installation done',
+                      },
+                      {
+                        id: '3',
+                        title: 'Check connection stability',
+                        status: 'in_progress',
+                        description: 'Final installation check',
+                      },
+                      {
+                        id: '4',
+                        title: 'L3.1 LED surface-mounted wall light',
+                        status: 'done',
+                        description: 'L3.1 LED surface-mounted wall light installed',
+                      },
+                      {
+                        id: '5',
+                        title: 'Electrical connection, general, 3-pin',
+                        status: 'done',
+                        description: 'Done: Part installation done',
+                      },
+                    ],
+                  } as any
+                }
+                isActive={task.id === activeTaskId}
+                onClick={() => {
+                  setActiveTask(task.id)
+                  onTaskSelect?.(task.id)
+                }}
+              />
               <div className="flex gap-2 mt-1">
                 <Button onClick={() => setEditTaskId(task.id)}>Edit</Button>
                 <Button onClick={() => deleteTask(task.id)}>Delete</Button>
@@ -61,6 +98,7 @@ export const TaskList: FC<Props> = ({ planId, onTaskSelect }) => {
             </li>
           ))}
       </ul>
+      <Button onClick={() => setFormOpen(true)}>Add Task</Button>
       <TaskModal
         planId={planId}
         onSubmit={handleCreate}
