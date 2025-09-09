@@ -1,5 +1,3 @@
-// src/entities/checklist/checklistStore.ts
-
 import { create } from 'zustand'
 import { Checklist, ChecklistItem, ChecklistItemStatus } from './types'
 import {

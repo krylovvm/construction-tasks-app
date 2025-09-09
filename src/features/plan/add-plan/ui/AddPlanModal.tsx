@@ -32,10 +32,10 @@ export const AddPlanModal = ({ isOpen, onClose }: AddPlanModalProps) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Add New Plan">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         <Input label="Plan Name" value={name} onChange={e => setName(e.target.value)} />
         <ImageUpload label="Plan Image" value={image} onChange={setImage} />
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="flex justify-end gap-2 mt-3">
           <Button variant="secondary" onClick={onClose} disabled={isLoading}>
             Cancel
           </Button>

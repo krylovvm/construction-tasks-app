@@ -9,13 +9,15 @@ import { Task } from './types'
 
 interface TaskState {
   tasks: Task[]
+  isLoading: boolean
+  error: string | null
   activeTaskId: string | null
   fetchTasks: (planId: string) => Promise<void>
   addTask: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => Promise<Task>
   updateTask: (
-    id: string,
+    task: Task,
     updates: Partial<Omit<Task, 'id' | 'planId' | 'createdAt'>>
-  ) => Promise<Task | null>
+  ) => Promise<void>
   deleteTask: (id: string) => Promise<boolean>
   setActiveTask: (id: string | null) => void
 }
@@ -23,6 +25,8 @@ interface TaskState {
 export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
   activeTaskId: null,
+  isLoading: false,
+  error: null,
   fetchTasks: async planId => {
     const tasks = await getPlanTasks(planId)
     set({ tasks })
@@ -32,14 +36,14 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set(state => ({ tasks: [...state.tasks, newTask] }))
     return newTask
   },
-  updateTask: async (id, updates) => {
-    const updated = await apiUpdateTask(id, updates)
-    if (updated) {
-      set(state => ({
-        tasks: state.tasks.map(t => (t.id === id ? updated : t)),
-      }))
+  updateTask: async (task, updates) => {
+    set({ isLoading: true, error: null })
+    try {
+      await apiUpdateTask(task.id, updates)
+      await get().fetchTasks(task.planId)
+    } catch (error) {
+      set({ error: (error as Error).message, isLoading: false })
     }
-    return updated
   },
   deleteTask: async id => {
     const success = await apiDeleteTask(id)

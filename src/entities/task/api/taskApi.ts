@@ -21,13 +21,17 @@ export const addTask = async (
 export const updateTask = async (
   id: string,
   updates: Partial<Omit<Task, 'id' | 'planId' | 'createdAt'>>
-): Promise<Task | null> => {
+): Promise<void> => {
   const db = await getTaskDB()
   const doc = await db.tasks.findOne({ selector: { id } }).exec()
-  if (!doc) return null
-  const updated = { ...doc.toJSON(), ...updates, updatedAt: Date.now() }
-  await doc.update({ $set: updated })
-  return updated
+
+  if (!doc) return
+
+  await doc.modify(data => ({
+    ...data,
+    ...updates,
+    updatedAt: Date.now(),
+  }))
 }
 
 export const deleteTask = async (id: string): Promise<boolean> => {

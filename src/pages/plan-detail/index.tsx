@@ -7,7 +7,7 @@ import { PATHS } from '@/shared/config'
 import { usePlanStore } from '@/entities/plan'
 import { useUserStore } from '@/entities/user'
 import { useEffect } from 'react'
-import { TaskList } from '@/entities/task'
+import { TaskList } from '@/features/task'
 
 const PlanDetail = () => {
   const { id: planId } = useParams<{ id: string }>()
