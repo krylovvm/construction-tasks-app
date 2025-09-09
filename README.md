@@ -16,4 +16,5 @@ An offline-first web application for managing construction tasks.
 ### Install dependencies
 
 npm install
+
 npm run dev
