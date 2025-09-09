@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { PATHS } from '@/shared/config/paths'
 import { useUserStore } from '@/entities/user'
 
-export const HomePage = () => {
+const HomePage = () => {
   const { currentUser } = useUserStore()
 
   return (
@@ -30,3 +30,5 @@ export const HomePage = () => {
     </div>
   )
 }
+
+export default HomePage

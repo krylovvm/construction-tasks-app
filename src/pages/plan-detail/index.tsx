@@ -9,7 +9,7 @@ import { useUserStore } from '@/entities/user'
 import { useEffect } from 'react'
 import { TaskList } from '@/entities/task'
 
-export const PlanDetail = () => {
+const PlanDetail = () => {
   const { id: planId } = useParams<{ id: string }>()
   const { fetchPlans, plans } = usePlanStore()
 
@@ -59,3 +59,5 @@ export const PlanDetail = () => {
     </div>
   )
 }
+
+export default PlanDetail

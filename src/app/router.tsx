@@ -1,23 +1,34 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { App } from './App'
-import { Login, Plans, PlanDetail, HomePage } from '@/pages/'
 import { PATHS } from '@/shared/config'
+import { lazy } from 'react'
+
+const HomePage = lazy(() => import('@/pages/home-page'))
+const LoginPage = lazy(() => import('@/pages/login'))
+const PlansPage = lazy(() => import('@/pages/plans'))
+const PlanDetailPage = lazy(() => import('@/pages/plan-detail'))
 
 export const router = createBrowserRouter([
   {
     path: PATHS.HOME,
     element: <App />,
     children: [
-      { index: true, element: <HomePage /> },
+      {
+        index: true,
+        element: <HomePage />,
+      },
       {
         path: PATHS.LOGIN,
-        element: <Login />,
+        element: <LoginPage />,
       },
       {
         path: PATHS.PLANS,
-        element: <Plans />,
+        element: <PlansPage />,
       },
-      { path: `${PATHS.PLANS}/:id`, element: <PlanDetail /> },
+      {
+        path: `${PATHS.PLANS}/:id`,
+        element: <PlanDetailPage />,
+      },
     ],
   },
 ])

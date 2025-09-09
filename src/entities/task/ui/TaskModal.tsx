@@ -9,7 +9,7 @@ interface Props {
   open: boolean
 }
 
-export const TaskModal: FC<Props> = ({ planId, initial, onSubmit, onClose, open }) => {
+export const TaskModal: FC<Props> = ({ initial, onSubmit, onClose, open }) => {
   const [title, setTitle] = useState(initial?.title || '')
   const [status, setStatus] = useState(initial?.status || 'new')
 

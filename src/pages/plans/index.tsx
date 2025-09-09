@@ -4,7 +4,7 @@ import { Button } from '@/shared/ui'
 import { PlanList } from '@/entities/plan'
 import { useUserStore } from '@/entities/user'
 
-export const Plans = () => {
+const Plans = () => {
   const { currentUser } = useUserStore()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
@@ -21,3 +21,5 @@ export const Plans = () => {
     </div>
   )
 }
+
+export default Plans
