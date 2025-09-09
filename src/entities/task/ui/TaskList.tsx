@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import { useTaskStore } from '@/entities/task'
-import { Button } from '@/shared/ui'
 import { TaskModal } from './TaskModal'
 import { TaskListItem } from './TaskListItem'
 interface TaskListProps {
@@ -9,18 +8,11 @@ interface TaskListProps {
 }
 
 export const TaskList: FC<TaskListProps> = ({ planId, onTaskSelect }) => {
-  const { tasks, activeTaskId, setActiveTask, addTask, updateTask, deleteTask } = useTaskStore()
-  const [formOpen, setFormOpen] = useState(false)
+  const { tasks, activeTaskId, setActiveTask, updateTask, deleteTask } = useTaskStore()
   const [editTaskId, setEditTaskId] = useState<string | null>(null)
-  // TODO: fix type
-  const handleCreate = (title: string, status: string) => {
-    addTask({ planId, title, status: status as 'new' | 'in-progress' | 'done', x: 50, y: 50 }).then(
-      () => setFormOpen(false)
-    )
-  }
 
-  const handleEdit = (id: string, title: string, status: 'new' | 'in-progress' | 'done') => {
-    updateTask(id, { title, status }).then(() => setEditTaskId(null))
+  const handleEdit = (id: string, title: string) => {
+    updateTask(id, { title }).then(() => setEditTaskId(null))
   }
 
   if (tasks.length === 0) {
@@ -82,15 +74,16 @@ export const TaskList: FC<TaskListProps> = ({ planId, onTaskSelect }) => {
                   onTaskSelect?.(task.id)
                 }}
               />
-              <div className="flex gap-2 mt-1">
+              {/* TODO */}
+              {/* <div className="flex gap-2 mt-1">
                 <Button onClick={() => setEditTaskId(task.id)}>Edit</Button>
                 <Button onClick={() => deleteTask(task.id)}>Delete</Button>
-              </div>
+              </div> */}
               {editTaskId === task.id && (
                 <TaskModal
                   planId={planId}
-                  initial={{ title: task.title, status: task.status }}
-                  onSubmit={(title, status) => handleEdit(task.id, title, status as any)} // TODO: fix type
+                  initial={{ title: task.title }}
+                  onSubmit={title => handleEdit(task.id, title)}
                   onClose={() => setEditTaskId(null)}
                   open={true}
                 />
@@ -98,13 +91,6 @@ export const TaskList: FC<TaskListProps> = ({ planId, onTaskSelect }) => {
             </li>
           ))}
       </ul>
-      <Button onClick={() => setFormOpen(true)}>Add Task</Button>
-      <TaskModal
-        planId={planId}
-        onSubmit={handleCreate}
-        onClose={() => setFormOpen(false)}
-        open={formOpen}
-      />
     </div>
   )
 }

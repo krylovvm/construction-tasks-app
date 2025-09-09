@@ -10,7 +10,6 @@ const taskSchemaLiteral = {
     id: { type: 'string', maxLength: 100 },
     planId: { type: 'string', maxLength: 100 },
     title: { type: 'string', maxLength: 100 },
-    status: { type: 'string', enum: ['new', 'in-progress', 'done'] },
     x: { type: 'number' },
     y: { type: 'number' },
     createdAt: { type: 'number' },

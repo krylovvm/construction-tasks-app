@@ -87,16 +87,13 @@ export const PlanContainer = ({ plan, activeTaskId, onTaskSelect }: PlanContaine
       // Add marker on click
       map.on('click', (e: LeafletMouseEvent) => {
         const { lat, lng } = e.latlng
-        const title = prompt('Enter task title:')
-        if (title) {
-          addTask({
-            planId: plan.id,
-            title,
-            status: 'new',
-            x: lng,
-            y: lat,
-          })
-        }
+
+        addTask({
+          planId: plan.id,
+          title: 'New Task',
+          x: lng,
+          y: lat,
+        })
       })
     }
   }, [plan.image, plan.id, addTask, mapInitialized])

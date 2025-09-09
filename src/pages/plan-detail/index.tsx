@@ -45,7 +45,9 @@ const PlanDetail = () => {
         <>
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4">
             <PlanContainer plan={currentPlan} />
-            <TaskList planId={planId} />
+            <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+              <TaskList planId={planId} />
+            </div>
           </div>
 
           <DeletePlanModal
