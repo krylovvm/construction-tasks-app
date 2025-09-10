@@ -145,7 +145,7 @@ export const PlanContainer = ({ plan }: PlanContainerProps) => {
 
     map.setView([activeTask.y, activeTask.x], 1, {
       animate: true,
-      duration: 0.5,
+      duration: 0.9,
     })
   }, [activeTaskId, tasks, mapReady, plan.id])
 
