@@ -51,7 +51,7 @@ export const CheckList: FC<CheckListProps> = ({ taskId }) => {
   return (
     <div>
       {checklists.map(cl => (
-        <div key={cl.id} className="mb-6">
+        <div key={cl.id} className="mb-6 text-left">
           {isEditingTitle === cl.id ? (
             <div className="mb-2">
               <Input

@@ -14,7 +14,27 @@ const getStatusInfo = (status: ChecklistItemStatus) => {
     case 'Not started':
       return { color: 'bg-gray-300', icon: null, textColor: 'text-gray-500' }
     case 'In progress':
-      return { color: 'bg-blue-500', icon: null, textColor: 'text-blue-500' }
+      return {
+        color: 'bg-blue-500',
+        icon: (
+          <svg
+            className="w-5 h-5 text-blue-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20Z"
+              fill="currentColor"
+            />
+            <path
+              d="M15.95 12.28C15.74 12.71 15.26 12.88 14.83 12.67L12.49 11.41V7C12.49 6.59 12.82 6.25 13.24 6.25C13.66 6.25 13.99 6.59 13.99 7V10.5L15.73 11.44C16.15 11.65 16.32 12.14 15.95 12.28Z"
+              fill="currentColor"
+            />
+          </svg>
+        ),
+        textColor: 'text-blue-500',
+      }
     case 'Blocked':
       return {
         color: 'bg-red-500',
@@ -30,7 +50,30 @@ const getStatusInfo = (status: ChecklistItemStatus) => {
         textColor: 'text-red-500',
       }
     case 'Final Check awaiting':
-      return { color: 'bg-yellow-500', icon: null, textColor: 'text-yellow-500' }
+      return {
+        color: 'bg-yellow-500',
+        icon: (
+          <svg
+            className="w-5 h-5 text-yellow-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path d="M12 12H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <path d="M12 16H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <path d="M9 3L12 3L15 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="8.5" cy="12.5" r="1.5" fill="currentColor" />
+            <circle cx="8.5" cy="16.5" r="1.5" fill="currentColor" />
+          </svg>
+        ),
+        textColor: 'text-yellow-500',
+      }
     case 'Done':
       return {
         color: 'bg-green-500',
@@ -94,12 +137,12 @@ export const CheckListItem: FC<CheckListItemProps> = ({ item, checklistId }) => 
   }
 
   return (
-    <div className="flex flex-col space-y-1 py-2">
+    <div className="flex flex-col py-1">
       <div className="flex items-start">
-        <div className="relative">
+        <div className="relative mt-1">
           <button
             onClick={() => setIsSelectingStatus(!isSelectingStatus)}
-            className={`w-6 h-6 rounded border flex items-center justify-center mr-3 ${
+            className={`w-6 h-6 rounded border flex items-center justify-center mr-3 cursor-pointer ${
               item.status === 'Done'
                 ? 'border-green-500 bg-green-50'
                 : item.status === 'Blocked'
@@ -145,12 +188,12 @@ export const CheckListItem: FC<CheckListItemProps> = ({ item, checklistId }) => 
             />
           </div>
         ) : (
-          <div className="flex-grow cursor-pointer" onClick={() => setIsEditingText(true)}>
+          <div className="flex-grow cursor-text" onClick={() => setIsEditingText(true)}>
             <span>{item.text}</span>
           </div>
         )}
         <Button
-          className="w-8 h-8 flex items-center justify-center rounded-full  text-gray-500 hover:bg-gray-200 hover:shadow-lg hover:text-gray-700 transition cursor-pointer"
+          className="w-6 h-6 flex items-center justify-center rounded-full  text-gray-500 hover:bg-gray-200 hover:shadow-lg hover:text-gray-700 transition cursor-pointer"
           onClick={handleDeleteChecklistItem}
           type="button"
           aria-label="Delete Checklist Item"

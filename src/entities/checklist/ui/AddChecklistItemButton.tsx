@@ -1,11 +1,11 @@
-import React from 'react'
+import { FC } from 'react'
 import { useChecklistStore } from '../model/store'
 
 interface AddChecklistItemButtonProps {
   checklistId: string
 }
 
-export const AddChecklistItemButton: React.FC<AddChecklistItemButtonProps> = ({ checklistId }) => {
+export const AddChecklistItemButton: FC<AddChecklistItemButtonProps> = ({ checklistId }) => {
   const { addChecklistItem } = useChecklistStore()
 
   const handleAddItem = async () => {
@@ -15,25 +15,12 @@ export const AddChecklistItemButton: React.FC<AddChecklistItemButtonProps> = ({ 
   return (
     <button
       onClick={handleAddItem}
-      className="flex items-center gap-2 text-blue-500 hover:text-blue-700 transition-colors mt-4 group"
+      className="ronded flex items-center gap-2 text-blue-500 hover:text-blue-700 transition-colors mt-4 cursor-pointer"
     >
-      <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-current">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-3 w-3"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={3}
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          />
-        </svg>
+      <div className="flex items-center w-6 h-6 rounded border flex items-center justify-center cursor-pointer">
+        <span className="mb-0.5">+</span>
       </div>
-      <span className="font-medium text-sm group-hover:underline">ADD NEW ITEM</span>
+      <span className="font-medium text-sm ml-2">ADD NEW ITEM</span>
     </button>
   )
 }

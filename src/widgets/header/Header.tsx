@@ -13,7 +13,7 @@ export const Header = () => {
 
   return (
     <header className="w-full bg-blue-950 text-white shadow">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="mx-auto px-4 py-4 flex justify-between items-center">
         <Link to={PATHS.HOME} className="font-bold text-xl text-white">
           Construction Tasks App
         </Link>

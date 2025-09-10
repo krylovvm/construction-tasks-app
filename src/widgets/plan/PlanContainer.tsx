@@ -86,6 +86,8 @@ export const PlanContainer = ({ plan }: PlanContainerProps) => {
             y: lat,
           })
 
+          setActiveTask(task.id)
+
           addChecklist(task.id, 'New Task Checklist')
         })
 
@@ -130,6 +132,22 @@ export const PlanContainer = ({ plan }: PlanContainerProps) => {
         })
       })
   }, [tasks, plan.id, activeTaskId, setActiveTask, mapReady])
+
+  // Center map on active task
+  useEffect(() => {
+    const map = leafletMapRef.current
+
+    if (!map || !mapReady || !activeTaskId) return
+
+    const activeTask = tasks.find(task => task.id === activeTaskId && task.planId === plan.id)
+
+    if (!activeTask) return
+
+    map.setView([activeTask.y, activeTask.x], 1, {
+      animate: true,
+      duration: 0.5,
+    })
+  }, [activeTaskId, tasks, mapReady, plan.id])
 
   return <div className="w-full rounded shadow" ref={mapRef} style={{ height: `${mapHeight}px` }} />
 }

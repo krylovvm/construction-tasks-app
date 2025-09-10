@@ -30,7 +30,7 @@ const PlanDetail = () => {
   const handleNavigateToPlans = () => navigate(PATHS.PLANS)
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3">
           <Link to={PATHS.PLANS} className="text-2xl font-bold hover:underline">

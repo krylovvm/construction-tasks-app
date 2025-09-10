@@ -25,6 +25,8 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, onClick, isActive, c
   }, [isEditingTitle])
 
   const handleTitleClick = () => {
+    if (!isActive) return
+
     setIsEditingTitle(true)
   }
 
@@ -54,51 +56,45 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, onClick, isActive, c
   }
 
   return (
-    <div
-      className={`border rounded-md mb-2 transition cursor-pointer ${
+    <button
+      className={`w-full border rounded-md mb-2 transition cursor-pointer hover:border-blue-500 ${
         isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200 bg-white'
       }`}
+      onClick={onClick}
     >
-      <div className="p-3">
-        <div className="flex items-center justify-between">
-          {isEditingTitle ? (
-            <Input
-              ref={inputRef}
-              value={titleText}
-              onChange={e => setTitleText(e.target.value)}
-              onBlur={handleTitleChange}
-              onKeyDown={handleKeyDown}
-              className="w-full px-2 py-1 border border-gray-300 rounded h-6"
-              onClick={e => e.stopPropagation()}
-            />
-          ) : (
-            <div className="font-medium text-gray-900 cursor-text" onClick={handleTitleClick}>
-              {task.title}
-            </div>
-          )}
-          <div className="flex items-center space-x-2 ml-2">
-            {isActive && (
-              <Button
-                onClick={handleClickDelete}
-                aria-label="Delete Task"
-                title="Delete Task"
-                variant="secondary"
-              >
-                Delete
-              </Button>
-            )}
-            <Button
-              className="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-200 hover:shadow-lg hover:text-gray-700 transition cursor-pointer"
-              onClick={onClick}
-              type="button"
-              aria-label="Expand Task"
-            >
-              <span className="text-xl font-bold">{'>'}</span>
-            </Button>
+      <div className="w-full p-3 flex flex-col items-start">
+        {isEditingTitle ? (
+          <Input
+            ref={inputRef}
+            value={titleText}
+            onChange={e => setTitleText(e.target.value)}
+            onBlur={handleTitleChange}
+            onKeyDown={handleKeyDown}
+            className="w-full px-2 py-1 border border-gray-300 rounded h-6"
+            onClick={e => e.stopPropagation()}
+          />
+        ) : (
+          <div
+            className={`font-medium text-gray-900 ${isActive ? 'cursor-text' : 'cursor-pointer'}`}
+            onClick={handleTitleClick}
+          >
+            {task.title}
           </div>
-        </div>
-        {isActive && <div className="mt-2 border-t border-gray-200 pt-2">{children}</div>}
+        )}
+        {isActive && (
+          <>
+            <div className="w-full mt-2 border-t border-gray-200 pt-2">{children}</div>
+            <Button
+              onClick={handleClickDelete}
+              aria-label="Delete Task"
+              title="Delete Task"
+              variant="secondary"
+            >
+              Delete Task
+            </Button>
+          </>
+        )}
       </div>
-    </div>
+    </button>
   )
 }
