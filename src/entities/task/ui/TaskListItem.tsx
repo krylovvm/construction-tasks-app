@@ -70,12 +70,12 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, onClick, isActive, c
             onChange={e => setTitleText(e.target.value)}
             onBlur={handleTitleChange}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 py-1 border border-gray-300 rounded h-6"
+            className="w-full px-2 py-1 text-lg border border-gray-300 rounded h-7"
             onClick={e => e.stopPropagation()}
           />
         ) : (
           <div
-            className={`font-medium text-gray-900 ${isActive ? 'cursor-text' : 'cursor-pointer'}`}
+            className={`font-medium text-lg text-gray-900 ${isActive ? 'cursor-text' : 'cursor-pointer'}`}
             onClick={handleTitleClick}
           >
             {task.title}

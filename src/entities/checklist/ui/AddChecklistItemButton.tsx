@@ -20,7 +20,7 @@ export const AddChecklistItemButton: FC<AddChecklistItemButtonProps> = ({ checkl
       <div className="flex items-center w-6 h-6 rounded border flex items-center justify-center cursor-pointer">
         <span className="mb-0.5">+</span>
       </div>
-      <span className="font-medium text-sm ml-2">ADD NEW ITEM</span>
+      <span className="font-medium text-sm ml-1">ADD NEW ITEM</span>
     </button>
   )
 }
