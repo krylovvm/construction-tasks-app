@@ -70,6 +70,7 @@ npm run preview
 - Icons optimization
 - Adding animations to improve interface responsiveness
 - Snackbar notifications
+- Search, filters and sort for Plans and Tasks
 
 ## 📂 Project Structure
 
