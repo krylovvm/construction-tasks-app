@@ -73,21 +73,9 @@ npm run preview
 
 ## 📂 Project Structure
 
-src/
-├── app/ # Application initialization, routing
-├── entities/ # Business entities
-│ ├── checklist/ # Checklists (model, API, UI)
-│ ├── plan/ # Construction plans
-│ ├── task/ # Tasks on sites
-│ └── user/ # Users
-├── features/ # Functional capabilities
-│ ├── task/
-│ │ ├── create/ # Task creation
-│ │ └── list/ # Task list display
-├── pages/ # Application pages
-├── shared/ # Reusable resources
-│ ├── assets/ # Static resources (icons, images)
-│ ├── lib/ # Utilities, helper functions
-│ └── ui/ # UI components (Input, Button, etc.)
-└── widgets/ # Compositional blocks
-└── plan/ # Plan display widget with tasks
+- **app/** — Application entry point, global providers and configuration
+- **shared/** — Reusable UI components, utilities, types, config, assets
+- **entities/** — Business entities (user, task, checklist)
+- **features/** — User scenarios and business logic
+- **widgets/** — Composite components combining entities and features
+- **pages/** — Application pages/routes
